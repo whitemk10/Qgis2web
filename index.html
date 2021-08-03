@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <div class="legend">
+            <h4 style="font-family: Robata, Lato, sans-serif" id="roboto-plus-backups">Nashville Land Classifications</h4>
+            <p style="font-family: Roboto, Lato, sans-serif" id="roboto-plus-backups"><b>Type</b></p><br/>
+            <i style="background: #59b7f5"></i> <p> Water </p>
+            <i style="background: #e61010"></i> <p> High-Development </p>
+            <i style="background: #f47b10"></i> <p> Low-Medium Development </p>
+            <i style="background: #166b39"></i> <p> Forest/Vegetation </p>
+            <p style="font-family: Roboto, Lato, sans-serif" id="roboto-plus-backups"><b>By: Kirstie White</b></p>
+</div>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/DavidsonCountyBoundary_2.js"></script>
+        <script src="data/NeighborhoodBoundaries_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[35.94500355746286,-87.27737459324878],[36.435969599344524,-86.26929473323835]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_ESRIGraydark_0');
+        map.getPane('pane_ESRIGraydark_0').style.zIndex = 400;
+        var layer_ESRIGraydark_0 = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRIGraydark_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRIGraydark_0;
+        map.addLayer(layer_ESRIGraydark_0);
+        map.createPane('pane_LandClassifications_1');
+        map.getPane('pane_LandClassifications_1').style.zIndex = 401;
+        var img_LandClassifications_1 = 'data/LandClassifications_1.png';
+        var img_bounds_LandClassifications_1 = [[35.96743803323519,-87.05492747892715],[36.40576271235921,-86.5135789857897]];
+        var layer_LandClassifications_1 = new L.imageOverlay(img_LandClassifications_1,
+                                              img_bounds_LandClassifications_1,
+                                              {pane: 'pane_LandClassifications_1'});
+        bounds_group.addLayer(layer_LandClassifications_1);
+        map.addLayer(layer_LandClassifications_1);
+        function pop_DavidsonCountyBoundary_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['area_sq_mi'] !== null ? autolinker.link(feature.properties['area_sq_mi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_area'] !== null ? autolinker.link(feature.properties['shape_area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_len'] !== null ? autolinker.link(feature.properties['shape_len'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DavidsonCountyBoundary_2_0() {
+            return {
+                pane: 'pane_DavidsonCountyBoundary_2',
+                opacity: 1,
+                color: 'rgba(246,245,245,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,113,72,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_DavidsonCountyBoundary_2');
+        map.getPane('pane_DavidsonCountyBoundary_2').style.zIndex = 402;
+        map.getPane('pane_DavidsonCountyBoundary_2').style['mix-blend-mode'] = 'normal';
+        var layer_DavidsonCountyBoundary_2 = new L.geoJson(json_DavidsonCountyBoundary_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_DavidsonCountyBoundary_2',
+            layerName: 'layer_DavidsonCountyBoundary_2',
+            pane: 'pane_DavidsonCountyBoundary_2',
+            onEachFeature: pop_DavidsonCountyBoundary_2,
+            style: style_DavidsonCountyBoundary_2_0,
+        });
+        bounds_group.addLayer(layer_DavidsonCountyBoundary_2);
+        map.addLayer(layer_DavidsonCountyBoundary_2);
+        function pop_NeighborhoodBoundaries_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Neighborho</th>\
+                        <td>' + (feature.properties['Neighborho'] !== null ? autolinker.link(feature.properties['Neighborho'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_NeighborhoodBoundaries_3_0() {
+            return {
+                pane: 'pane_NeighborhoodBoundaries_3',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,113,88,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_NeighborhoodBoundaries_3');
+        map.getPane('pane_NeighborhoodBoundaries_3').style.zIndex = 403;
+        map.getPane('pane_NeighborhoodBoundaries_3').style['mix-blend-mode'] = 'normal';
+        var layer_NeighborhoodBoundaries_3 = new L.geoJson(json_NeighborhoodBoundaries_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_NeighborhoodBoundaries_3',
+            layerName: 'layer_NeighborhoodBoundaries_3',
+            pane: 'pane_NeighborhoodBoundaries_3',
+            onEachFeature: pop_NeighborhoodBoundaries_3,
+            style: style_NeighborhoodBoundaries_3_0,
+        });
+        bounds_group.addLayer(layer_NeighborhoodBoundaries_3);
+        map.addLayer(layer_NeighborhoodBoundaries_3);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/NeighborhoodBoundaries_3.png" /> Neighborhood Boundaries': layer_NeighborhoodBoundaries_3,'<img src="legend/DavidsonCountyBoundary_2.png" /> Davidson County Boundary': layer_DavidsonCountyBoundary_2,"Land Classifications": layer_LandClassifications_1,"ESRI Gray (dark)": layer_ESRIGraydark_0,}).addTo(map);
+        map.on("zoomend", function(){
+
+                if (map.hasLayer(layer_NeighborhoodBoundaries_3)) {
+                    if (map.getZoom() <= 12 && map.getZoom() >= 19) {
+                        layer_NeighborhoodBoundaries_3.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_NeighborhoodBoundaries_3.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
+        });
+        setBounds();
+        var i = 0;
+        layer_NeighborhoodBoundaries_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Neighborho'] !== null?String('<div style="color: #f1f0f0; font-size: 10pt; font-family: \'.AppleSystemUIFont\', sans-serif;">' + layer.feature.properties['Neighborho']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_NeighborhoodBoundaries_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+                if (map.hasLayer(layer_NeighborhoodBoundaries_3)) {
+                    if (map.getZoom() <= 12 && map.getZoom() >= 19) {
+                        layer_NeighborhoodBoundaries_3.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_NeighborhoodBoundaries_3.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        resetLabels([layer_NeighborhoodBoundaries_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_NeighborhoodBoundaries_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_NeighborhoodBoundaries_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_NeighborhoodBoundaries_3]);
+        });
+        </script>
+    </body>
+</html>
